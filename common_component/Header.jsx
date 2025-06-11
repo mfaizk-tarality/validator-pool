@@ -25,6 +25,20 @@ const navItems = [
       },
     ],
   },
+  {
+    label: "Burn & Vesting",
+    href: "#",
+    children: [
+      {
+        label: "Burn",
+        href: "/burn",
+      },
+      {
+        label: "Vesting",
+        href: "/vesting",
+      },
+    ],
+  },
 ];
 
 const Header = () => {
