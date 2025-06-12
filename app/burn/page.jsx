@@ -203,6 +203,7 @@ const Burn = () => {
                   formik.handleSubmit();
                 }}
                 isLoading={isPending}
+                isConnected={isConnected}
               >
                 Burn{" "}
                 {formik.values?.amount ? formatNice(formik.values?.amount) : ""}{" "}

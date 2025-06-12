@@ -75,7 +75,7 @@ const Header = () => {
               </ul>
             </>
           ) : (
-            <details className="dropdown dropdown-hover">
+            <details className="dropdown">
               <summary>{item.label}</summary>
               <ul className="p-2 dropdown-content z-[1] bg-background rounded-box w-52">
                 {item.children.map((child) => renderNavItem(child))}

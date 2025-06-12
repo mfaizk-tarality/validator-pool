@@ -116,57 +116,60 @@ const Vesting = () => {
               </tr>
             </thead>
             <tbody>
-              {convertedDataFromHook?.map((data, idx) => {
-                return (
-                  <tr key={idx}>
-                    <td>{formatNice(data.allocatedAmount || 0)} TAN</td>
-                    <td> {formatNice(data.claimedAmount || 0)} TAN</td>
-                    <td>
-                      {data.startClaimTimestamp
-                        ? moment.unix(data.startClaimTimestamp)?.format("lll")
-                        : "--"}
-                    </td>
-                    <td>
-                      {data.claimEndTimestamp
-                        ? moment.unix(data.claimEndTimestamp)?.format("lll")
-                        : "--"}
-                    </td>
+              {isConnected &&
+                convertedDataFromHook?.map((data, idx) => {
+                  return (
+                    <tr key={idx}>
+                      <td>{formatNice(data.allocatedAmount || 0)} TAN</td>
+                      <td> {formatNice(data.claimedAmount || 0)} TAN</td>
+                      <td>
+                        {data.startClaimTimestamp
+                          ? moment.unix(data.startClaimTimestamp)?.format("lll")
+                          : "--"}
+                      </td>
+                      <td>
+                        {data.claimEndTimestamp
+                          ? moment.unix(data.claimEndTimestamp)?.format("lll")
+                          : "--"}
+                      </td>
 
-                    <td>
-                      {data.nextClaimTimestamp
-                        ? moment.unix(data.nextClaimTimestamp)?.format("lll")
-                        : "--"}
-                    </td>
-                    <td>
-                      {data.claimedAmount ? formatNice(data.claimedAmount) : 0}{" "}
-                      TAN
-                    </td>
-                    <td>
-                      <div className="flex items-center ">
-                        {Number(data.unlockedAmount) > 0 ? (
-                          <CustomButton
-                            isConnected={isConnected}
-                            isLoading={selectedIndex == idx && isLoading}
-                            clickHandler={() => {
-                              handleClaim(idx);
-                            }}
-                          >
-                            Claim
-                          </CustomButton>
-                        ) : (
-                          <>
-                            {data.claimedAmount == 0 ? (
-                              <></>
-                            ) : (
-                              <CustomButton outlined>Claimed</CustomButton>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      <td>
+                        {data.nextClaimTimestamp
+                          ? moment.unix(data.nextClaimTimestamp)?.format("lll")
+                          : "--"}
+                      </td>
+                      <td>
+                        {data.claimedAmount
+                          ? formatNice(data.claimedAmount)
+                          : 0}{" "}
+                        TAN
+                      </td>
+                      <td>
+                        <div className="flex items-center ">
+                          {Number(data.unlockedAmount) > 0 ? (
+                            <CustomButton
+                              isConnected={isConnected}
+                              isLoading={selectedIndex == idx && isLoading}
+                              clickHandler={() => {
+                                handleClaim(idx);
+                              }}
+                            >
+                              Claim
+                            </CustomButton>
+                          ) : (
+                            <>
+                              {data.claimedAmount == 0 ? (
+                                <></>
+                              ) : (
+                                <CustomButton outlined>Claimed</CustomButton>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
