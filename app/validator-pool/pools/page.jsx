@@ -171,7 +171,7 @@ const Pools = () => {
         <CustomButton
           isConnected={isConnected}
           outlined
-          className={"rounded-sm w-[90%]"}
+          className={"rounded-sm w-[60%]"}
         >
           Upcoming
         </CustomButton>
@@ -181,7 +181,7 @@ const Pools = () => {
     return (
       <CustomButton
         isConnected={isConnected}
-        className={"rounded-sm w-[90%]"}
+        className={"rounded-sm w-[60%]"}
         isLoading={
           writeContractPending &&
           currentSelectedData?.contractAddress == item?.contractAddress

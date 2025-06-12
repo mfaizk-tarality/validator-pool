@@ -98,7 +98,7 @@ const CompletedPools = () => {
     return (
       <CustomButton
         isConnected={isConnected}
-        className={"rounded-sm w-[90%]"}
+        className={"rounded-sm w-[60%]"}
         // isLoading={
         //   currentSelectedData?.contractAddress == item?.contractAddress
         // }
