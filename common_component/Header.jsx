@@ -75,7 +75,7 @@ const Header = () => {
               </ul>
             </>
           ) : (
-            <details className="dropdown">
+            <details className="dropdown headerDropDown">
               <summary>{item.label}</summary>
               <ul className="p-2 dropdown-content z-[1] bg-background rounded-box w-52">
                 {item.children.map((child) => renderNavItem(child))}
@@ -132,7 +132,18 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="navbar-end hidden lg:flex min-w-fit 2xl:gap-10">
+      <div
+        className="navbar-end hidden lg:flex min-w-fit 2xl:gap-10"
+        onBlur={() => {
+          document.querySelectorAll(".headerDropDown")?.forEach((e) => {
+            if (e.hasAttribute("open")) {
+              setTimeout(() => {
+                e.removeAttribute("open");
+              }, 200);
+            }
+          });
+        }}
+      >
         <ul className="menu menu-horizontal px-1 2xl:gap-10">
           {navItems.map((item) => renderNavItem(item))}
         </ul>
