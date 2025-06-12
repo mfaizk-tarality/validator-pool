@@ -35,14 +35,14 @@ const Footer = () => {
         { name: "Cookie policy", url: "#" },
       ],
     },
-    {
-      title: "Legal",
-      links: [
-        { name: "Terms of use", url: "#" },
-        { name: "Privacy policy", url: "#" },
-        { name: "Cookie policy", url: "#" },
-      ],
-    },
+    // {
+    //   title: "Legal",
+    //   links: [
+    //     { name: "Terms of use", url: "#" },
+    //     { name: "Privacy policy", url: "#" },
+    //     { name: "Cookie policy", url: "#" },
+    //   ],
+    // },
   ];
 
   const socials = [

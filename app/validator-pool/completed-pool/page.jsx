@@ -24,7 +24,7 @@ const breadCrumb = [
     href: "/home",
   },
   {
-    text: "Notify",
+    text: "Completed pool",
     href: "/validator-pool/completed-pool",
   },
 ];
@@ -126,7 +126,8 @@ const CompletedPools = () => {
             className="text-tanborder"
             styles={buildStyles({
               pathColor: "#d3177b",
-              textColor: "#d3177b",
+              textColor: "#fff",
+              trailColor: "rgb(62, 64, 71)",
             })}
           />
         </div>
@@ -154,7 +155,7 @@ const CompletedPools = () => {
                   return (
                     <div
                       key={idx}
-                      className="min-h-96 flex justify-start items-center flex-col  border border-stroke col-span-12 sm:col-span-6  lg:col-span-4 2xl:col-span-3 p-4 gap-6 rounded-xl"
+                      className="min-h-80 flex justify-start items-center flex-col  border border-stroke col-span-12 sm:col-span-6  lg:col-span-4 2xl:col-span-3 p-4 gap-6 rounded-xl"
                     >
                       <p className="font-semibold text-base">
                         {item?.poolName || ""}
@@ -167,14 +168,14 @@ const CompletedPools = () => {
                             {item?.commissionRate ? item?.commissionRate : 0}%
                           </p>
                         </div>
-                        <div className="flex justify-between items-center w-full">
+                        {/* <div className="flex justify-between items-center w-full">
                           <p className="text-description">Total Deposit:</p>
                           <p>
                             {formatNice(
                               Number(item?.fixedAmount ? item?.fixedAmount : 0)
                             )}
                           </p>
-                        </div>
+                        </div> */}
 
                         <div className="flex justify-between items-center w-full">
                           <p className="text-description">Pool Address:</p>

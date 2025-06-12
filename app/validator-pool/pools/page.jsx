@@ -21,6 +21,7 @@ import { IconMinus, IconPlus } from "@tabler/icons-react";
 import { maskValue } from "@/utils";
 import { formatNice } from "coin-format";
 import Timer from "@/common_component/Timer";
+import ConnectWallet from "@/common_component/ConnectWallet";
 
 const breadCrumb = [
   {
@@ -230,7 +231,8 @@ const Pools = () => {
             className="text-tanborder"
             styles={buildStyles({
               pathColor: "#d3177b",
-              textColor: "#d3177b",
+              textColor: "#fff",
+              trailColor: "rgb(62, 64, 71)",
             })}
           />
         </div>
@@ -282,51 +284,57 @@ const Pools = () => {
           </div>
           <div className="w-full grid grid-cols-12 mt-4 rounded-2xl relative gap-4">
             <div className="col-span-12 grid grid-cols-12 gap-4 md:gap-6 xl:gap-12 p-10 rounded-md">
-              {stakeDataList?.map((item, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className="min-h-96 flex justify-start items-center flex-col  border border-stroke col-span-12 sm:col-span-6  lg:col-span-4 2xl:col-span-3 p-4 gap-6 rounded-xl"
-                  >
-                    <p className="font-semibold text-base">
-                      {item?.poolName || ""}
-                    </p>
-                    {cardUpperHandler(item, idx)}
-                    <div className="w-full flex flex-col gap-1">
-                      <div className="flex justify-between items-center w-full">
-                        <p className="text-description">Network Expense:</p>
-                        <p>
-                          {item?.commissionRate ? item?.commissionRate : 0}%
-                        </p>
-                      </div>
-                      <div className="flex justify-between items-center w-full">
-                        <p className="text-description">Min Deposit:</p>
-                        <p>
-                          {formatNice(
-                            Number(item?.fixedAmount ? item?.fixedAmount : 0)
-                          )}
-                        </p>
-                      </div>
-                      <div className="flex justify-between items-center w-full">
-                        <p className="text-description">Max Deposit:</p>
-                        <p>{formatNice(getMaxValue(item))}</p>
-                      </div>
-                      <div className="flex justify-between items-center w-full">
-                        <p className="text-description">Pool Address:</p>
-                        <p>
-                          {maskValue({
-                            str: item?.contractAddress,
-                            enableCopyButton: true,
-                          })}
-                        </p>
-                      </div>
-                      <div className="w-full flex items-center justify-center py-4">
-                        {buttonComponent(item, amountList?.[idx])}
+              {!isConnected && (
+                <div className="col-span-12">
+                  <ConnectWallet />
+                </div>
+              )}
+              {isConnected &&
+                stakeDataList?.map((item, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className="min-h-96 flex justify-start items-center flex-col  border border-stroke col-span-12 sm:col-span-6  lg:col-span-4 2xl:col-span-3 p-4 gap-6 rounded-xl"
+                    >
+                      <p className="font-semibold text-base">
+                        {item?.poolName || ""}
+                      </p>
+                      {cardUpperHandler(item, idx)}
+                      <div className="w-full flex flex-col gap-1">
+                        <div className="flex justify-between items-center w-full">
+                          <p className="text-description">Network Expense:</p>
+                          <p>
+                            {item?.commissionRate ? item?.commissionRate : 0}%
+                          </p>
+                        </div>
+                        <div className="flex justify-between items-center w-full">
+                          <p className="text-description">Min Deposit:</p>
+                          <p>
+                            {formatNice(
+                              Number(item?.fixedAmount ? item?.fixedAmount : 0)
+                            )}
+                          </p>
+                        </div>
+                        <div className="flex justify-between items-center w-full">
+                          <p className="text-description">Max Deposit:</p>
+                          <p>{formatNice(getMaxValue(item))}</p>
+                        </div>
+                        <div className="flex justify-between items-center w-full">
+                          <p className="text-description">Pool Address:</p>
+                          <p>
+                            {maskValue({
+                              str: item?.contractAddress,
+                              enableCopyButton: true,
+                            })}
+                          </p>
+                        </div>
+                        <div className="w-full flex items-center justify-center py-4">
+                          {buttonComponent(item, amountList?.[idx])}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         </div>

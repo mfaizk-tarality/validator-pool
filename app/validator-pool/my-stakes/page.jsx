@@ -14,6 +14,7 @@ import Timer from "@/common_component/Timer";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import ConfirmationModal from "@/common_component/ConfirmationModal";
 import { toast } from "sonner";
+import ConnectWallet from "@/common_component/ConnectWallet";
 
 const breadCrumb = [
   {
@@ -27,7 +28,7 @@ const breadCrumb = [
 ];
 
 const MyStakes = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const unstakeModalRef = useRef();
   const revertModalRef = useRef();
   const claimModalRef = useRef();
@@ -306,93 +307,102 @@ const MyStakes = () => {
   };
 
   return (
-    <div className="overflow-hidden">
-      <div className="w-full flex items-end justify-end">
-        <BreadCrumb routes={breadCrumb} />
-      </div>
-      <div className="grid grid-cols-12 my-10 gap-6">
-        <div className="col-span-12 flex">
-          <PageTitle
-            title={"My Stakes"}
+    <div className="grid grid-cols-12">
+      <div className="col-span-12  2xl:col-span-10 2xl:col-start-2">
+        <div className="overflow-hidden">
+          <div className="w-full flex items-end justify-end">
+            <BreadCrumb routes={breadCrumb} />
+          </div>
+          <div className="grid grid-cols-12 my-10 gap-6">
+            <div className="col-span-12 flex">
+              <PageTitle
+                title={"My Stakes"}
+                subtitle={
+                  "Participate in Network Security and Earn Rewards—Stake Tokens in the Validator Pool to Support Decentralization and Consensus."
+                }
+              />
+            </div>
+            <div className="col-span-12 overflow-auto">
+              {!isConnected && <ConnectWallet />}
+              {isConnected && (
+                <table className="table table-pin-rows table-pin-cols min-w-[1000px]">
+                  <thead>
+                    <tr className="bg-stroke">
+                      <td>Pool Address</td>
+                      <td>Name</td>
+                      <td>Staked</td>
+                      <td>Network Expense</td>
+                      <td>Reward</td>
+                      <td>Claim Amount</td>
+                      <td>Action</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stakeDataList?.map((item, idx) => {
+                      return (
+                        <tr key={idx}>
+                          <td>
+                            {maskValue({
+                              str: item?.contractAddress || "",
+                              enableCopyButton: true,
+                            })}
+                          </td>
+                          <td>{item?.poolName || ""}</td>
+                          <td>{formatNice(getStakedValue(item))} TAN</td>
+                          <td>{item?.commissionRate || ""}%</td>
+                          <td>
+                            {item?.userReward
+                              ? `${Number(item?.userReward)?.toFixed(6)} %`
+                              : "--"}
+                          </td>
+                          <td>
+                            {item?.userWithdrawalRequestAmount
+                              ? Number(
+                                  item?.userWithdrawalRequestAmount ?? 0
+                                )?.toFixed(6)
+                              : "--"}
+                          </td>
+                          <td>
+                            <div className="flex items-center ">
+                              {buttonHandler(item)}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+          <ConfirmationModal
+            modalRef={unstakeModalRef}
+            fxn={unStakeHandler}
+            title={"Confirm Unstake"}
             subtitle={
-              "Participate in Network Security and Earn Rewards—Stake Tokens in the Validator Pool to Support Decentralization and Consensus."
+              "Are you sure,  you want to unstake from the invested pool?"
             }
+            confirmText={"Unstake"}
+            isLoading={writeContractPending}
+          />
+          <ConfirmationModal
+            modalRef={revertModalRef}
+            fxn={revertHandler}
+            title={"Confirm Revert"}
+            subtitle={"Are you sure, you want to revert your investment?"}
+            confirmText={"Revert"}
+            isLoading={writeContractPending}
+          />
+          <ConfirmationModal
+            modalRef={claimModalRef}
+            fxn={claimHandler}
+            title={"Confirm Claim"}
+            subtitle={"Are you sure, you want to claim?"}
+            confirmText={"Claim Amount"}
+            isLoading={writeContractPending}
           />
         </div>
-        <div className="col-span-12 overflow-auto">
-          <table className="table table-pin-rows table-pin-cols min-w-[1000px]">
-            <thead>
-              <tr className="bg-stroke">
-                <td>Pool Address</td>
-                <td>Name</td>
-                <td>Staked</td>
-                <td>Network Expense</td>
-                <td>Reward</td>
-                <td>Claim Amount</td>
-                <td>Action</td>
-              </tr>
-            </thead>
-            <tbody>
-              {stakeDataList?.map((item, idx) => {
-                return (
-                  <tr key={idx}>
-                    <td>
-                      {maskValue({
-                        str: item?.contractAddress || "",
-                        enableCopyButton: true,
-                      })}
-                    </td>
-                    <td>{item?.poolName || ""}</td>
-                    <td>{formatNice(getStakedValue(item))} TAN</td>
-                    <td>{item?.commissionRate || ""}%</td>
-                    <td>
-                      {item?.userReward
-                        ? `${Number(item?.userReward)?.toFixed(6)} %`
-                        : "--"}
-                    </td>
-                    <td>
-                      {item?.userWithdrawalRequestAmount
-                        ? Number(
-                            item?.userWithdrawalRequestAmount ?? 0
-                          )?.toFixed(6)
-                        : "--"}
-                    </td>
-                    <td>
-                      <div className="flex items-center ">
-                        {buttonHandler(item)}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
       </div>
-      <ConfirmationModal
-        modalRef={unstakeModalRef}
-        fxn={unStakeHandler}
-        title={"Confirm Unstake"}
-        subtitle={"Are you sure,  you want to unstake from the invested pool?"}
-        confirmText={"Unstake"}
-        isLoading={writeContractPending}
-      />
-      <ConfirmationModal
-        modalRef={revertModalRef}
-        fxn={revertHandler}
-        title={"Confirm Revert"}
-        subtitle={"Are you sure, you want to revert your investment?"}
-        confirmText={"Revert"}
-        isLoading={writeContractPending}
-      />
-      <ConfirmationModal
-        modalRef={claimModalRef}
-        fxn={claimHandler}
-        title={"Confirm Claim"}
-        subtitle={"Are you sure, you want to claim?"}
-        confirmText={"Claim Amount"}
-        isLoading={writeContractPending}
-      />
     </div>
   );
 };

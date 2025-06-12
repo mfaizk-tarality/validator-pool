@@ -68,6 +68,7 @@ const NotifyComponent = ({ currentSelectedData, modalRef }) => {
       <div className="flex flex-col gap-1 w-full">
         <label htmlFor="email">Email*</label>
         <input
+          placeholder="Enter your email address."
           id="email"
           name="email"
           type="text"
